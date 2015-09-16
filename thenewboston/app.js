@@ -1,10 +1,10 @@
 /**
  * Created by Vietpn on 9/16/2015.
  */
-var person = {
-    firsName : "Bucky",
-    lastName: "Roberts",
-    age :28
+var printBacon = function(){
+    console.log("bacon is healthy, don't beleive doctor")
 }
 
-console.log(person)
+printBacon()
+
+setTimeout(printBacon, 5000)
