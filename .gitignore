@@ -1,2 +1,5 @@
 /.idea
 workspace_nodejs.iml
+thenewboston/node_modules/
+socket.io/node_modules/
+brent/node_modules/
