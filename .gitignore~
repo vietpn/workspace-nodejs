@@ -1,0 +1,13 @@
+<<<<<<< HEAD
+/.idea
+workspace_nodejs.iml
+thenewboston/node_modules/
+socket.io/node_modules/
+brent/node_modules/
+=======
+/.idea
+workspace_nodejs.iml
+thenewboston/node_modules/
+socket.io/node_modules/
+brent/node_modules/
+>>>>>>> afab45b1d726e448814fa1445f0181b9253675df
