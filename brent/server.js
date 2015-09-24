@@ -9,11 +9,14 @@ var express = require("express"),
     session = require('express-session'),
     mongoose = require('mongoose'),
     path = require('path'),
-    bodyParse = require("body-parser");
+    bodyParse = require("body-parser"),
+    passport = require("passport"),
+    flash = require("connect-flash");
 
 // setup config Database
-var conifgDB = require('./config/database')
-mongoose.connect(conifgDB.url)
+var conifgDB = require('./config/database');
+mongoose.connect(conifgDB.url);
+require('./config/passport')(passport);
 
 
 app.use(morgan("dev"));
@@ -27,15 +30,22 @@ app.use(bodyParse.urlencoded({
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+// using passport
+app.use(passport.initialize());
+app.use(passport.session());
+// using flash
+app.use(flash());
+
+
+// setup session
 app.use(session({
-    secret: 'anystringtypehere',
+    secret: 'anyString',
     resave: true,
     saveUninitialized: true
+}));
 
-}))
 
+require('./app/routes.js')(app)(passport);
+app.listen(port);
 
-require('./app/routes.js')(app)
-app.listen(port)
-
-console.log("Server running on port: " + port)
+console.log("Server running on port: " + port);

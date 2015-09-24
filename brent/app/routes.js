@@ -3,33 +3,22 @@
  */
 var User = require("./models/user")
 
-module.exports = function(app){
+module.exports = function(app, passport){
     app.get('/', function(req, res){
         res.render('index')
     })
 
     app.get('/signup', function(req, res){
         res.render('signup', {
-            message: 'updated here'
+            message: req.flash('signupMessage')
         })
     })
 
-    app.post('/signup', function(req, res){
-        var newUser = new User();
-
-        newUser.local.username = req.body.username;
-        newUser.local.password = req.body.password;
-
-        console.log("post recevied: %s %s", req.body.email, req.body.password);
-
-        // save database and throw error
-        newUser.save(function(err){
-            if(err) throw err;
-        })
-
-        // redirect to index
-        res.redirect('/')
-    })
+    app.post('/signup', passport.authenticate('local-signup', {
+        successRedirect : '/',
+        failureRedirect: '/signup',
+        failureRedirect: true
+    }))
 
     app.get('/:username/:password', function(req, res){
         var newUser = new User();
