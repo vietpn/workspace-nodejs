@@ -1,11 +1,11 @@
 /**
  * Created by vietpn on 24/09/2015.
  */
-var localStrategy = require("passport-local").Strategy;
-
-var User = require('../app/models/user')
+var localStrategy = require("passport-local").Strategy,
+    User = require('../app/models/user');
 
 module.exports = function(passport){
+
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
@@ -22,7 +22,7 @@ module.exports = function(passport){
         passReqToCallback:  true,
     }, function(req, email, password, done){
         process.nextTick(function(){
-            User.findOne({'local.email' : email}, function(err, user){
+            User.findOne({'local.username' : email}, function(err, user){
                 if(err) return done(err);
 
                 if(user){

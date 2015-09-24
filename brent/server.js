@@ -18,17 +18,18 @@ var conifgDB = require('./config/database');
 mongoose.connect(conifgDB.url);
 require('./config/passport')(passport);
 
-
 app.use(morgan("dev"));
 app.use(cookieParser());
 app.use(bodyParse.urlencoded({
     extended : false
 }));
 
-
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
+// using session
+app.use(session({
+    secret: 'anyString',
+    resave: true,
+    saveUninitialized: true
+}));
 
 // using passport
 app.use(passport.initialize());
@@ -36,16 +37,11 @@ app.use(passport.session());
 // using flash
 app.use(flash());
 
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 
-// setup session
-app.use(session({
-    secret: 'anyString',
-    resave: true,
-    saveUninitialized: true
-}));
-
-
-require('./app/routes.js')(app)(passport);
+require('./app/routes.js')(app, passport);
 app.listen(port);
 
 console.log("Server running on port: " + port);

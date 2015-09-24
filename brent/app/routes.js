@@ -15,10 +15,10 @@ module.exports = function(app, passport){
     })
 
     app.post('/signup', passport.authenticate('local-signup', {
-        successRedirect : '/',
+        successRedirect: '/',
         failureRedirect: '/signup',
-        failureRedirect: true
-    }))
+        failureFlash: true
+    }));
 
     app.get('/:username/:password', function(req, res){
         var newUser = new User();
