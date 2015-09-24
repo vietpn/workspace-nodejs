@@ -1,9 +1,9 @@
 /**
  * Created by vietpn on 24/09/2015.
  */
-var mogoose = require("mongoose");
+var mongoose = require("mongoose");
 
-var userScheme = mogoose.Schema({
+var userScheme = mongoose.Schema({
     local: {
         username: String,
         password: String
