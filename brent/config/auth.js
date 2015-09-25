@@ -7,6 +7,6 @@ module.exports  = {
         clientSecret: "7a3c23e48d48e6aa5f4a4b4bc736c9af",
         callbackURL: "http://localhost:8080/auth/facebook/callback",
         enableProof: true,
-        profileFields: ['id', 'displayName', 'link', 'about_me', 'photos', 'email']
+        profileFields: ['id', 'displayName', 'name','link', 'photos', 'email']
     }
 }
