@@ -2,7 +2,9 @@
  * Created by vietpn on 24/09/2015.
  */
 var localStrategy = require("passport-local").Strategy,
-    User = require('../app/models/user');
+    User = require('../app/models/user'),
+    configAuth = require('./auth'),
+    facebookStrategy = require("passport-facebook").Strategy;
 
 module.exports = function(passport){
 
@@ -26,17 +28,18 @@ module.exports = function(passport){
     }, function(req, email, password, done){
         process.nextTick(function(){
             User.findOne({'local.username' : email}, function(err, user){
-                if(err) return done(err);
-
-                if(user){
+                if(err)
+                    return done(err);
+                if(user)
                     return done(null, false, req.flash("signupMessage", "That email already taken"));
-                } else {
+                else {
                     var newUser = new User();
                     newUser.local.username = email;
                     newUser.local.password = newUser.generateHash(password);
 
                     newUser.save(function(err){
-                        if(err) throw err;
+                        if(err)
+                            throw err;
                         return done(null, newUser);
                     })
                 }
@@ -56,10 +59,8 @@ module.exports = function(passport){
             User.findOne({'local.username': email}, function(err, user){
                 if(err)
                     return done(err);
-
                 if(!user)
                     return done(null, false, req.flash("loginMessage", "No User found"));
-
                 if(!user.validPassword(password))
                     return done(null, false, req.flash("loginMessage", "Invalid"));
 
@@ -68,4 +69,32 @@ module.exports = function(passport){
             })
         })
     }))
+
+    passport.use(new facebookStrategy({
+            clientID: configAuth.facebookAuth.clientID,
+            clientSecret: configAuth.facebookAuth.clientSecret,
+            callbackURL: configAuth.facebookAuth.callbackURL
+        },function(accessToken, refreshToken, profile, done) {
+            process.nextTick(function(){
+                User.findOne({'facebook.id': profile.id}, function(err, user){
+                    if(err)
+                        return done(err);
+                    if(user)
+                        return done(null, user);
+                    else{
+                        var newUser = new User();
+                        newUser.facebook.id = profile.id;
+                        newUser.facebook.token = accessToken;
+                        newUser.facebook.email = "";
+                        newUser.facebook.name = profile.displayName;
+
+                        newUser.save(function(err){
+                            if(err)
+                                throw err;
+                            return done(null, newUser)
+                        })
+                    }
+                })
+            })
+    }));
 }

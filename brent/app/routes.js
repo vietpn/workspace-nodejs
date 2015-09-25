@@ -53,6 +53,15 @@ module.exports = function(app, passport){
         req.logout();
         res.redirect('/')
     })
+
+    /**
+     * Facebook
+     */
+    app.get('/auth/facebook', passport.authenticate('facebook', {scope : ['email']}));
+
+    app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+        successRedirect: '/profile', failureRedirect: '/'
+    }));
 }
 
 function isLoggedIn(req, res, next){
