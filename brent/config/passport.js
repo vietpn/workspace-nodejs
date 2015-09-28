@@ -70,6 +70,10 @@ module.exports = function(passport){
         })
     }))
 
+
+    /**
+     * passport for authen facebook
+     */
     passport.use(new facebookStrategy({
             clientID: configAuth.facebookAuth.clientID,
             clientSecret: configAuth.facebookAuth.clientSecret,
