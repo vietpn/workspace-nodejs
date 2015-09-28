@@ -8,5 +8,10 @@ module.exports  = {
         callbackURL: "http://localhost:8080/auth/facebook/callback",
         enableProof: true,
         profileFields: ['id', 'displayName', 'name','link', 'photos', 'email']
+    },
+    'googlekAuth' : {
+        clientID: "843769526697-ea66fp76rcbpn0v02k2n33qfn9a1nilp.apps.googleusercontent.com",
+        clientSecret: "__j93jiQ8vUH8PnZr4o3P6qI",
+        callbackURL: "http://localhost:8080/auth/google/callback"
     }
 }

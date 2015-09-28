@@ -4,7 +4,10 @@
 var localStrategy = require("passport-local").Strategy,
     User = require('../app/models/user'),
     configAuth = require('./auth'),
-    facebookStrategy = require("passport-facebook").Strategy;
+    facebookStrategy = require("passport-facebook").Strategy,
+    googleStrategy = require('passport-google-oauth').OAuth2Strategy;
+
+
 
 module.exports = function(passport){
 
@@ -101,5 +104,36 @@ module.exports = function(passport){
                     }
                 })
             })
+    }));
+
+    /**
+     * Passport for Auth Google
+     */
+    passport.use(new googleStrategy({
+            clientID: configAuth.googlekAuth.clientID,
+            clientSecret: configAuth.googlekAuth.clientSecret,
+            callbackURL: configAuth.googlekAuth.callbackURL
+        },function(accessToken, refreshToken, profile, done) {
+        process.nextTick(function(){
+            User.findOne({'google.id': profile.id}, function(err, user){
+                if(err)
+                    return done(err);
+                if(user)
+                    return done(null, user);
+                else{
+                    var newUser = new User();
+                    newUser.google.id = profile.id;
+                    newUser.google.token = accessToken;
+                    newUser.google.email = profile.emails[0].value;
+                    newUser.google.name = profile.displayName;
+
+                    newUser.save(function(err){
+                        if(err)
+                            throw err;
+                        return done(null, newUser)
+                    })
+                }
+            })
+        })
     }));
 }
