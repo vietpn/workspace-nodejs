@@ -28,7 +28,7 @@ module.exports = function(app, passport){
     /**
      * Screen profile user
      */
-    app.get('/profile',
+    app.get('/profile', isLoggedIn,
         function(req, res){
             res.render('profile', {
                 user: req.user
@@ -52,15 +52,6 @@ module.exports = function(app, passport){
         }));
 
     /**
-     * User logout
-     */
-    app.get('/logout',
-        function(req, res){
-            req.logout();
-            res.redirect('/')
-        })
-
-    /**
      * Facebook
      */
     app.get('/auth/facebook',
@@ -81,28 +72,38 @@ module.exports = function(app, passport){
     /**
      * link social account
      */
-    app.get('connect/facebook',
+    app.get('/connect/facebook',
         passport.authenticate('facebook', {authType: 'rerequest', scope : ['public_profile', 'email']}));
-    app.get('connect/google',
+    app.get('/connect/google',
         passport.authenticate('google', { scope: ['email', 'profile']}));
-    app.get('connect/local',
+    app.get('/connect/local',
         function(req, res){
             res.render('connect-local', {
                 message: req.flash('signupMessage')
             })
         })
-    app.post('connect/local',
+    app.post('/connect/local',
         passport.authenticate('local-signup', {
-            successRedirect: '/',
+            successRedirect: '/profile',
             failureRedirect: '/connect/local',
             failureFlash: true
         }));
+
+
+    /**
+     * User logout
+     */
+    app.get('/logout',
+        function(req, res){
+            req.logout();
+            res.redirect('/')
+        })
 }
 
-function isLoggedIn(req, res, next){
+function isLoggedIn(req, res, next) {
     if(req.isAuthenticated()){
-        return next
+        return next();
     }
 
-    res.redirect('/login')
+    res.redirect('/login');
 }
