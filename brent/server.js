@@ -50,13 +50,12 @@ app.use(flash());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-var auth = express.Router();
-require('./app/routes/auth')(auth, passport);
-app.use('/auth', auth);
 
-var secure = express.Router();
-require('./app/routes/secure')(secure, passport);
-app.use('/', secure)
+var auth = require('./app/routes/auth')(passport);
+var secure = require('./app/routes/secure')(passport);
+
+app.use('/auth', auth);
+app.use('/', secure);
 
 app.listen(port);
 

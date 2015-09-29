@@ -1,10 +1,11 @@
 /**
  * Created by vietpn on 24/09/2015.
  */
-var User = require("../models/user")
+var User = require("../models/user"),
+    express = require('express'),
+    router = express.Router();
 
-module.exports = function(router, passport){
-
+module.exports = function(passport){
     // localhost:8080/auth/
     router.get('/',
         function(req, res){
@@ -107,4 +108,6 @@ module.exports = function(router, passport){
             res.redirect('/profile');
         })
     });
+
+    return router;
 }
