@@ -39,27 +39,20 @@ module.exports = function(router, passport){
         }));
 
 
-    /**
-     * Facebook
-     */
     router.get('/facebook',
         passport.authenticate('facebook', {authType: 'rerequest', scope : ['public_profile', 'email']}));
 
     router.get('/facebook/callback',
         passport.authenticate('facebook', {successRedirect: '/profile', failureRedirect: '/'}));
 
-    /**
-     * Google
-     */
+
     router.get('/google',
         passport.authenticate('google', { scope: ['email', 'profile']}));
 
     router.get('/google/callback',
         passport.authenticate('google', { successRedirect: '/profile' , failureRedirect: '/'}));
 
-    /**
-     * link social account
-     */
+
     router.get('/connect/facebook',
         passport.authenticate('facebook', {authType: 'rerequest', scope : ['public_profile', 'email']}));
     router.get('/connect/google',
@@ -78,18 +71,13 @@ module.exports = function(router, passport){
         }));
 
 
-    /**
-     * User logout
-     */
     router.get('/logout',
         function(req, res){
             req.logout();
             res.redirect('/')
         })
 
-    /**
-     * Unlik account
-     */
+
     router.get('/unlink/facebook', function(req,res){
         var user = req.user;
         user.facebook.token = null;
