@@ -99,9 +99,21 @@ module.exports = function(passport){
                     User.findOne({'facebook.id': profile.id}, function(err, user){
                         if(err)
                             return done(err);
-                        if(user)
+                        if(user){
+                            if(!user.facebook.token){
+                                user.facebook.id = profile.id;
+                                user.facebook.token = accessToken;
+                                user.facebook.email = profile.emails[0].value;
+                                user.facebook.name = profile.displayName;
+
+                                user.save(function(err){
+                                    if(err)
+                                        throw err;
+                                    return done(null, user)
+                                })
+                            }
                             return done(null, user);
-                        else{
+                        } else{
                             var newUser = new User();
                             newUser.facebook.id = profile.id;
                             newUser.facebook.token = accessToken;
@@ -147,9 +159,21 @@ module.exports = function(passport){
                 User.findOne({'google.id': profile.id}, function(err, user){
                     if(err)
                         return done(err);
-                    if(user)
+                    if(user){
+                        if(!user.google.token){
+                            user.google.id = profile.id;
+                            user.google.token = accessToken;
+                            user.google.email = profile.emails[0].value;
+                            user.google.name = profile.displayName;
+
+                            user.save(function(err){
+                                if(err)
+                                    throw err;
+                                return done(null, user)
+                            })
+                        }
                         return done(null, user);
-                    else{
+                    } else{
                         var newUser = new User();
                         newUser.google.id = profile.id;
                         newUser.google.token = accessToken;
