@@ -11,7 +11,8 @@ var express = require("express"),
     path = require('path'),
     bodyParse = require("body-parser"),
     passport = require("passport"),
-    flash = require("connect-flash");
+    flash = require("connect-flash"),
+    mongoStore = require('connect-mongo')(session);
 
 // setup config Database
 var conifgDB = require('./config/database');
@@ -28,7 +29,8 @@ app.use(bodyParse.urlencoded({
 app.use(session({
     secret: 'anyString',
     resave: true,
-    saveUninitialized: true
+    saveUninitialized: true,
+    store: new mongoStore({ mongooseConnection: mongoose.connection , ttl: 14 * 24 * 60 * 60})
 }));
 
 // using passport
@@ -36,6 +38,13 @@ app.use(passport.initialize());
 app.use(passport.session());
 // using flash
 app.use(flash());
+
+//app.use(function(req, res, next){
+//    console.log(req.session);
+//    console.log("===================");
+//    console.log(req.user);
+//    next();
+//});
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
