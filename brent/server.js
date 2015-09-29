@@ -50,7 +50,14 @@ app.use(flash());
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
-require('./app/routes.js')(app, passport);
+var auth = express.Router();
+require('./app/routes/auth')(auth, passport);
+app.use('/auth', auth);
+
+var secure = express.Router();
+require('./app/routes/secure')(secure, passport);
+app.use('/', secure)
+
 app.listen(port);
 
 console.log("Server running on port: " + port);
