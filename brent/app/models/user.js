@@ -39,7 +39,7 @@ var tokenSchema = mongoose.Schema({
     },
     expireAt: {
         type: Date,
-        expires: 60,
+        expires: 60, // 60 seconds
         default: Date.now
     }
 })
