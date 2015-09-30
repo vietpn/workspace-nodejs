@@ -16,7 +16,7 @@ module.exports = function(passport){
 
     router.get('/profile',
         function(req, res){
-            res.render('profile', {
+            res.render('secured/profile', {
                 user: req.user
             })
         })

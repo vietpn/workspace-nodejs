@@ -51,11 +51,15 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 
+
 var auth = require('./app/routes/auth')(passport);
 var secure = require('./app/routes/secure')(passport);
+var api = require('./app/routes/api')(passport);
 
 app.use('/auth', auth);
+app.use('/api', api);
 app.use('/', secure);
+
 
 app.listen(port);
 

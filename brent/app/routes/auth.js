@@ -15,7 +15,7 @@ module.exports = function(passport){
     // localhost:8080/auth/login
     router.get('/login',
         function(req, res){
-            res.render('login', {
+            res.render('auth/login', {
                 message: req.flash('loginMessage')})
         })
     router.post('/login',
@@ -28,7 +28,7 @@ module.exports = function(passport){
     // localhost:8080/auth/signup
     router.get('/signup',
         function(req, res){
-            res.render('signup', {
+            res.render('auth/signup', {
                 message: req.flash('signupMessage')
             })
         })
@@ -60,7 +60,7 @@ module.exports = function(passport){
         passport.authenticate('google', { scope: ['email', 'profile']}));
     router.get('/connect/local',
         function(req, res){
-            res.render('connect-local', {
+            res.render('auth/connect-local', {
                 message: req.flash('signupMessage')
             })
         })
