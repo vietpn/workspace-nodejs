@@ -1,7 +1,7 @@
 /**
  * Created by vietpn on 24/09/2015.
  */
-var User = require("../models/user"),
+var User = require("../models/user").User,
     express = require('express'),
     router = express.Router();
 

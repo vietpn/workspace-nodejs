@@ -2,7 +2,8 @@
  * Created by vietpn on 24/09/2015.
  */
 var localStrategy = require("passport-local").Strategy,
-    User = require('../app/models/user'),
+    User = require('../app/models/user').User,
+    Token = require('../app/models/user').Token,
     configAuth = require('./auth'),
     facebookStrategy = require("passport-facebook").Strategy,
     googleStrategy = require('passport-google-oauth').OAuth2Strategy,
@@ -208,11 +209,11 @@ module.exports = function(passport){
 
     passport.use(new bearStrategy(
         function(token, done) {
-            User.findOne({ _id: token }, function (err, user) {
-                if (err) { return done(err); }
-                if (!user) { return done(null, false); }
-                return done(null, user);
-            });
+            Token.findOne({value : token}).populate('user').exec(function(err, token){
+                if(!token)
+                    return done(null, false);
+                return done(null, token.user);
+            })
         }
     ));
 }
