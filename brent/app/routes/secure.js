@@ -5,6 +5,7 @@ var express = require('express'),
     router = express.Router();
 
 module.exports = function(passport){
+    // check if user is not logged, redirect to login
     router.use(function(req, res, next){
         if(req.isAuthenticated()){
             return next();
@@ -12,12 +13,14 @@ module.exports = function(passport){
 
         res.redirect('/auth/login');
     });
+
     router.get('/profile',
         function(req, res){
             res.render('profile', {
                 user: req.user
             })
         })
+
     router.get('/*', function(req, res){
         res.redirect('/profile')
     })
