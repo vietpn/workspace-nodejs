@@ -70,7 +70,7 @@ module.exports = function(passport){
         passReqToCallback: true
     }, function(req, email, password, done){
         process.nextTick(function(){
-            User.findOne({'local.username': email}).populate('token').exec(function(err, user){
+            User.findOne({'local.username': email}, function(err, user){
                 if(err)
                     return done(err);
                 if(!user)
