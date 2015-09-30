@@ -18,9 +18,9 @@ module.exports = function(passport){
     });
 
     passport.deserializeUser(function(id, done) {
-        User.findById(id, function (err, user) {
+        User.findById(id).populate('token').exec(function(err, user){
             done(err, user);
-        });
+        })
     });
 
     /**
@@ -70,7 +70,7 @@ module.exports = function(passport){
         passReqToCallback: true
     }, function(req, email, password, done){
         process.nextTick(function(){
-            User.findOne({'local.username': email}, function(err, user){
+            User.findOne({'local.username': email}).populate('token').exec(function(err, user){
                 if(err)
                     return done(err);
                 if(!user)
@@ -79,8 +79,7 @@ module.exports = function(passport){
                     return done(null, false, req.flash("loginMessage", "Invalid"));
 
                 return done(null, user)
-
-            })
+            });
         })
     }))
 

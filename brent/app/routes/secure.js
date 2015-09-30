@@ -26,8 +26,14 @@ module.exports = function(passport){
         User.findOne({_id : req.user.id}).populate('token').exec(function(err, user){
             if(user.token == null)
                 user.generateToken();
-            req.user = user;
-            res.redirect('/profile');
+            req.user = user
+            res.redirect('/profile')
+        })
+    });
+
+    router.get('/testToken', function(req, res){
+        User.findOne({_id : req.user.id}).populate('token').exec(function(err, user){
+            res.json(user)
         })
     });
 
