@@ -37,7 +37,7 @@ var tokenSchema = mongoose.Schema({
         type: schema.Types.ObjectId,
         ref: 'User'
     },
-    expireAt: {
+    createdAt: {
         type: Date,
         expires: 60 // 60 seconds
     }
