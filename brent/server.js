@@ -30,7 +30,7 @@ app.use(session({
     secret: 'anyString',
     resave: true,
     saveUninitialized: true,
-    store: new mongoStore({ mongooseConnection: mongoose.connection , ttl: 14 * 24 * 60 * 60})
+    store: new mongoStore({ mongooseConnection: mongoose.connection , ttl: 14 * 24 * 60 * 60}) // 14 days
 }));
 
 // using passport
