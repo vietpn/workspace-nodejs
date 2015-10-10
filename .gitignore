@@ -4,4 +4,6 @@ thenewboston/node_modules/
 socket.io/node_modules/
 brent/node_modules/
 brent/logs.txt
+bower/node_modules/
+bower/bower_components/
 
